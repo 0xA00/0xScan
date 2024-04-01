@@ -1,0 +1,47 @@
+#set a mongodb and mongo-express container
+version: "3"
+
+networks:
+  scanworks:
+    driver: bridge
+    external: true
+
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    volumes:
+      - mongodb:/data/db
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongodb:27017/
+    networks:
+      - scanworks
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://mongodb:27017/
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=password
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+    networks:
+      - scanworks
+
+  pyapp:
+    build: ./Pyapp
+    networks:
+      - scanworks
+    depends_on:
+      - mongodb
+    volumes:
+      - ./Pyapp:/app
+
+volumes:
+  mongodb:
+    driver: local
