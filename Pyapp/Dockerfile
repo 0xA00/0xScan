@@ -2,11 +2,11 @@
 
 # Use an official Python runtime as a parent image
 
-FROM Python:3.9
+FROM ubuntu:latest
 
 # Install Python and essential build tools
-RUN apt-get update
-
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip
 WORKDIR /app
 COPY . /app
 
