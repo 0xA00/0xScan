@@ -10,7 +10,7 @@ RUN apt-get update && \
 WORKDIR /app
 COPY . /app
 
-RUN apt-y install git
+RUN apt -y install git
 RUN git clone https://github.com/adrian154/masscan.git
 WORKDIR /app/masscan
 RUN make install
