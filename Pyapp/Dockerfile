@@ -2,11 +2,11 @@
 
 # Use an official Python runtime as a parent image
 
-FROM ubuntu:latest
+FROM Python:3.9-slim
 
 # Install Python and essential build tools
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip
+RUN apt-get update
+
 WORKDIR /app
 COPY . /app
 
@@ -16,7 +16,7 @@ WORKDIR /app/masscan
 RUN make install
 WORKDIR /app
 
-RUN apt -y install python3.10-venv
+RUN apt -y install python3.9-venv
 RUN python3 -m venv .venv
 RUN . .venv/bin/activate
 RUN pip3 install pymongo
