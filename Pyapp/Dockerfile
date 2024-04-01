@@ -15,8 +15,9 @@ RUN git clone https://github.com/adrian154/masscan.git
 WORKDIR /app/masscan
 RUN make install
 WORKDIR /app
+RUN apt-get install libpcap0.8 libpcap0.8-dev libpcap-dev
 
-RUN apt -y install python3.9-venv
+RUN apt -y install python3-venv
 RUN python3 -m venv .venv
 RUN . .venv/bin/activate
 RUN pip3 install pymongo
