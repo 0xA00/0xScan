@@ -2,7 +2,7 @@
 
 # Use an official Python runtime as a parent image
 
-FROM Python:3.9-slim
+FROM Python:3.9
 
 # Install Python and essential build tools
 RUN apt-get update
