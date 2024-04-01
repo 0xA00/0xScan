@@ -2,8 +2,7 @@
 
 # Use an official Python runtime as a parent image
 
-FROM ubuntu:latest
-
+FROM ubuntu:20.04
 # Install Python and essential build tools
 RUN apt-get update && \
     apt-get install -y python3 python3-pip
