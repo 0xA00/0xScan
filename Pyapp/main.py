@@ -7,19 +7,22 @@ from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import pymongo
 import subprocess
 
+myClient = pymongo.MongoClient('mongodb://mongodb:27017/')
+myDB = myClient['MinecraftServer']
+myColServer = myDB['server']
+myColPlayer = myDB['player']
 
 
 def store_server(ipAll):
-
-        myClient = pymongo.MongoClient('mongodb://mongodb:27017/')
-        myDB = myClient['MinecraftServer']
-        myColServer = myDB['server']
-        myColPlayer = myDB['player']
         text=''
         version=''
         online = -1
         status = ipAll['ports'][0]
         statusmc = json.loads(status['service']['banner'])
+        #check if the server is already stored
+        if myColServer.find_one({'ip':ipAll['ip']}):
+            return
+
         if 'description' in statusmc:
             if 'text' in statusmc['description']:
                 text = statusmc['description']['text']
