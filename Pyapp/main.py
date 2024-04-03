@@ -14,11 +14,10 @@ def store_server(ipAll):
         myDB = myClient['MinecraftServer']
         myColServer = myDB['server']
         myColPlayer = myDB['player']
-
-        mydict = {"ip":ipAll['ip']}
-
-
-
+        text=''
+        version=''
+        online = -1
+        status = ips['ports'][0]
 
 
 
@@ -42,6 +41,9 @@ def scan(iprange,nbstart):
                     PortIps = ips['ports']
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
                        print(f"{ips['ip']}    {PortIps[0]['service']} " )
+                       print(f"{PortIps[0]['service']['banner']['description']}")
+                       print(f"{PortIps[0]['service']['banner']['version']}")
+
 
 
 
