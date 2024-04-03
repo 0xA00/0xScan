@@ -18,6 +18,17 @@ def store_server(ipAll):
         version=''
         online = -1
         status = ips['ports'][0]
+        statusmc = json.loads(status['service']['banner'])
+        if 'description' in statusmc:
+            if 'text' in statusmc['description']:
+                text = statusmc['description']['text']
+            else:
+                text = statusmc['description']
+
+        if 'version' in statusmc:
+            version = statusmc['version']['name']
+
+
 
 
 
@@ -42,7 +53,7 @@ def scan(iprange,nbstart):
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
                        print(f"{ips['ip']}    {PortIps[0]['service']['banner']} " )
                        statusmc = json.loads(PortIps[0]['service']['banner'])
-                       print(f"{statusmc['description']}")
+                       print(f"{statusmc['version']['name']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['description']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['version']}")
 
