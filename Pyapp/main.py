@@ -11,7 +11,7 @@ import subprocess
 
 def store_server(ipAll):
         print(f"Server {ipAll['ip']} is storing")
-        myClient = pymongo.MongoClient('mongodb://admin:password@localhost:27017')
+        myClient = pymongo.MongoClient('mongodb://root:example@mongodb:27017')
         myDB = myClient['MinecraftServer']
         myColServer = myDB['server']
         myColPlayer = myDB['player']
