@@ -41,8 +41,8 @@ def scan(iprange,nbstart):
                     PortIps = ips['ports']
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
                        print(f"{ips['ip']}    {PortIps[0]['service']} " )
-                       print(f"{PortIps[0]['service']['banner']['description']}")
-                       print(f"{PortIps[0]['service']['banner']['version']}")
+                       print(f"{PortIps[0]['service']['banner'][0]['description']}")
+                       print(f"{PortIps[0]['service']['banner'][0]['version']}")
 
 
 
