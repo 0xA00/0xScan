@@ -10,6 +10,7 @@ import subprocess
 
 
 def store_server(ipAll):
+        print(f"Server {ipAll['ip']} is storing")
         myClient = pymongo.MongoClient('mongodb://mongodb:27017')
         myDB = myClient['MinecraftServer']
         myColServer = myDB['server']
@@ -180,13 +181,13 @@ async def main():
 
 
 if __name__ == "__main__":
-   #asyncio.run(main())
+   asyncio.run(main())
    #example for me :
-   myclient = pymongo.MongoClient('mongodb://mongodb:27017')
-   mydb = myclient["MinecraftServer"]
+   #myclient = pymongo.MongoClient('mongodb://mongodb:27017')
+   #mydb = myclient["MinecraftServer"]
 
        #create a collection
-   mycol = mydb["server"]
-   mydict = {"name": "John", "address": "Highway 37"}
-   x = mycol.insert_one(mydict)
-   print(x.inserted_id)
+   #mycol = mydb["server"]
+   #mydict = {"name": "John", "address": "Highway 37"}
+   #x = mycol.insert_one(mydict)
+   #print(x.inserted_id)
