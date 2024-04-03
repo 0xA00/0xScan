@@ -41,7 +41,8 @@ def scan(iprange,nbstart):
                     PortIps = ips['ports']
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
                        print(f"{ips['ip']}    {PortIps[0]['service']['banner']} " )
-                       print(f"{PortIps[0]['service']['banner'][0]}")
+                       statusmc = json.loads(PortIps[0]['service']['banner'])
+                       print(f"{statusmc['description']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['description']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['version']}")
 
