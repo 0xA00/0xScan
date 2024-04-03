@@ -7,22 +7,13 @@ from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import pymongo
 import subprocess
 
-myClient = pymongo.MongoClient('mongodb://mongodb:27017/')
+myClient = pymongo.MongoClient('mongodb://mongodb:27017/',maxPoolSize=64)
 myDB = myClient['MinecraftServer']
 myColServer = myDB['server']
 myColPlayer = myDB['player']
 
 
 def store_server(ipAll):
-    # add a mockup server ON THE PLAYER COLLECTION
-        player = {
-            'name': 'player1',
-           'uuid': 'uuid1',
-           'server': ipAll['ip']
-          }
-        myColPlayer.insert_one(player)
-        print(f"Player {player['name']} is stored")
-        return
         text=''
         version=''
         online = -1
