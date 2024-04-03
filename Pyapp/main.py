@@ -10,7 +10,7 @@ import subprocess
 
 
 def store_server(ipAll):
-        print(f"Server {ipAll['ip']} is storing")
+
         myClient = pymongo.MongoClient('mongodb://mongodb:27017/')
         myDB = myClient['MinecraftServer']
         myColServer = myDB['server']
@@ -80,6 +80,7 @@ def scan(iprange,nbstart):
                 for ips in resultados:
                     PortIps = ips['ports']
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
+                        print(f"{ips['ip']}")
                         store_server(ips)
                        #print(f"{PortIps[0]['service']['banner'][0]['description']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['version']}")
