@@ -17,7 +17,7 @@ def store_server(ipAll):
         text=''
         version=''
         online = -1
-        status = ips['ports'][0]
+        status = ipAll['ports'][0]
         statusmc = json.loads(status['service']['banner'])
         if 'description' in statusmc:
             if 'text' in statusmc['description']:
@@ -27,6 +27,34 @@ def store_server(ipAll):
 
         if 'version' in statusmc:
             version = statusmc['version']['name']
+
+        if 'players' in statusmc:
+            online = statusmc['players']['online']
+            if 'sample' in statusmc['players']:
+                for player in statusmc['players']['sample']:
+                    ptab = {
+                            'name': player['name'],
+                            'uuid': player['id'],
+                            'server': ipAll['ip']
+                            }
+
+                    myColPlayer.insert_one(ptab)
+
+        server = {
+                'ip': ipAll['ip'],
+                'port': status['port'],
+                'version': version,
+                'text': text,
+                'online': online,
+                'raw': status['service']['banner']
+                }
+
+        myColServer.insert_one(server)
+
+        print(f"Server {ipAll['ip']} is stored")
+
+
+
 
 
 
@@ -51,9 +79,7 @@ def scan(iprange,nbstart):
                 for ips in resultados:
                     PortIps = ips['ports']
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
-                       print(f"{ips['ip']}    {PortIps[0]['service']['banner']} " )
-                       statusmc = json.loads(PortIps[0]['service']['banner'])
-                       print(f"{statusmc['version']['name']}")
+                        store_server(ips)
                        #print(f"{PortIps[0]['service']['banner'][0]['description']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['version']}")
 
