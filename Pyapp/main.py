@@ -116,7 +116,6 @@ def set_tables(conn,dbfile):
     c.execute(sql_create_server_table)
     c.execute(sql_create_player_table)
     conn.commit()
-    conn.close()
 
 
 
