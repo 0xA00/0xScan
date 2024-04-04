@@ -80,9 +80,6 @@ def add_player(conndb,player):
 
 
 
-
-
-
 def create_connection(dbfile):
     conn = None
     try:
@@ -96,7 +93,7 @@ def create_connection(dbfile):
             conn.close()
     return conn
 
-def set_tables(dbfile):
+def set_tables(conn,dbfile):
     sql_create_server_table = """ CREATE TABLE IF NOT EXISTS server (
                                         id integer PRIMARY KEY,
                                         ip text NOT NULL,
@@ -114,7 +111,7 @@ def set_tables(dbfile):
                                         server text NOT NULL
                                         ); """
 
-    conn = sqlite3.connect(dbfile)
+
     c = conn.cursor()
     c.execute(sql_create_server_table)
     c.execute(sql_create_player_table)
@@ -221,8 +218,21 @@ def scan(iprange,nbstart,conn):
 async def main():
     db = r"Minecraft.db"
     conn = create_connection(db)
-    set_tables(db)
+    set_tables(conn,db)
     print("Database created")
+
+    server = {
+        'test',
+        25565,
+        'test',
+        'test',
+        1,
+        'test',
+        'test'
+    }
+
+    add_server(conn,server)
+
 
 
     IPa = list(range(1,0xff))
