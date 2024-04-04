@@ -71,6 +71,36 @@ def create_connection(dbfile):
         if conn:
             conn.close()
 
+def set_tables(dbfile):
+    sql_create_server_table = """ CREATE TABLE IF NOT EXISTS server (
+                                        id integer PRIMARY KEY,
+                                        ip text NOT NULL,
+                                        port integer NOT NULL,
+                                        version text,
+                                        text text,
+                                        online integer,
+                                        favicon text,
+                                        raw text
+                                        ); """
+
+    sql_create_player_table = """ CREATE TABLE IF NOT EXISTS player (
+                                        uuid text PRIMARY KEY,
+                                        name text NOT NULL,
+                                        server text NOT NULL
+                                        ); """
+
+    conn = sqlite3.connect(dbfile)
+    c = conn.cursor()
+    c.execute(sql_create_server_table)
+    c.execute(sql_create_player_table)
+    conn.commit()
+    conn.close()
+
+
+
+
+
+
 
 
 
@@ -193,7 +223,9 @@ async def main():
 
 
 if __name__ == "__main__":
-    create_connection("test.db")
+    db = r"Minecraft.db"
+    create_connection(db)
+    set_tables(db)
 
     asyncio.run(main())
 
