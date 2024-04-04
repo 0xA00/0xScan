@@ -88,8 +88,7 @@ def create_connection(dbfile):
 
 def set_tables(conn,dbfile):
     sql_create_server_table = """ CREATE TABLE IF NOT EXISTS server (
-                                        id integer PRIMARY KEY,
-                                        ip text not null,
+                                        ip text PRIMARY KEY,
                                         port integer NOT NULL,
                                         version text,
                                         text text,
@@ -219,7 +218,7 @@ async def main():
         "1.16.5",
         "A minecraft server",
         1,
-        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjElEQVR42mNk"
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjElEQVR42mNk",
         "wAF/GZ"
     )
 
