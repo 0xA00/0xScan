@@ -10,7 +10,7 @@ import subprocess
 
 
 
-def store_server(ipAll):
+async def store_server(ipAll):
         myClient = pymongo.MongoClient('mongodb://mongodb:27017/',maxPoolSize=64)
         myDB = myClient['MinecraftServer']
         myColServer = myDB['server']
@@ -85,7 +85,7 @@ def scan(iprange,nbstart):
                     PortIps = ips['ports']
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
                         print(f"{ips['ip']}")
-                        store_server(ips)
+                        asyncio.run(store_server(ips))
                        #print(f"{PortIps[0]['service']['banner'][0]['description']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['version']}")
 
@@ -187,10 +187,7 @@ async def main():
 
 if __name__ == "__main__":
 
-
     asyncio.run(main())
-
-
 
 
    #example for me :
