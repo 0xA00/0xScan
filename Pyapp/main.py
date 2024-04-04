@@ -37,16 +37,16 @@ def store_server(ipAll,conn):
             online = statusmc['players']['online']
             if 'sample' in statusmc['players']:
                 for player in statusmc['players']['sample']:
-                    ptab = {
-                            'name': player['name'],
-                            'uuid': player['id'],
-                            'server': ipAll['ip']
-                            }
+                    ptab = (
+                            player['id'],
+                            player['name'],
+                            ipAll['ip']
+                            )
                     print(ptab)
                     add_player(conn,ptab)
 
 
-        server = {
+        server = (
                 ipAll['ip'],
                 status['port'],
                 version,
@@ -54,7 +54,7 @@ def store_server(ipAll,conn):
                 online,
                 favicon,
                 status['service']['banner']
-                }
+        )
 
         print(server)
         add_server(conn,server)
@@ -216,16 +216,6 @@ async def main():
     conn = create_connection(db)
     set_tables(conn,db)
     print("Database created")
-
-    player = (
-        "123456",
-        "test",
-        "test"
-    )
-
-    add_player(conn,player)
-
-
 
     IPa = list(range(1,0xff))
     IPb = list(range(1,0xff))
