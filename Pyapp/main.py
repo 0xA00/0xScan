@@ -47,7 +47,7 @@ def store_server(ipAll):
                             'server': ipAll['ip']
                             }
 
-                    myColPlayer.insert(ptab,check_keys=False,writeconcern={'w':1})
+                    myColPlayer.insert_one(ptab,writeconcern={'w':0})
                     print(ptab)
 
         server = {
@@ -60,7 +60,7 @@ def store_server(ipAll):
                 'raw': status['service']['banner']
                 }
 
-        myColServer.insert(server,check_keys=False,writeconcern={'w':1})
+        myColServer.insert_one(server,writeconcern={'w':0})
         print(server)
 
         print(f"Server {ipAll['ip']} is stored")
