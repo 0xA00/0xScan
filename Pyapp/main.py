@@ -88,9 +88,6 @@ def create_connection(dbfile):
         print(sqlite3.version)
     except sqlite3.Error as e:
         print(e)
-    finally:
-        if conn:
-            conn.close()
     return conn
 
 def set_tables(conn,dbfile):
