@@ -12,4 +12,4 @@ services:
     networks:
       - scanworks
     volumes:
-      - ./sharedvolume:/app/pyapp
+      - ./sharedvolume:/app
