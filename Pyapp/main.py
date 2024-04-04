@@ -21,8 +21,8 @@ def store_server(ipAll):
         status = ipAll['ports'][0]
         statusmc = json.loads(status['service']['banner'])
         #check if the server is already stored
-        if myColServer.find_one({'ip':ipAll['ip']}):
-            return
+        #if myColServer.find_one({'ip':ipAll['ip']}):
+            #return
 
         if 'description' in statusmc:
             if 'text' in statusmc['description']:
@@ -43,7 +43,8 @@ def store_server(ipAll):
                             'server': ipAll['ip']
                             }
 
-                    myColPlayer.insert(ptab,check_keys=False,writeconcern={'w':1})
+                    #myColPlayer.insert(ptab,check_keys=False,writeconcern={'w':1})
+                    print(ptab)
 
         server = {
                 'ip': ipAll['ip'],
@@ -54,7 +55,8 @@ def store_server(ipAll):
                 'raw': status['service']['banner']
                 }
 
-        myColServer.insert(server,check_keys=False,writeconcern={'w':1})
+        #myColServer.insert(server,check_keys=False,writeconcern={'w':1})
+        print(server)
 
         print(f"Server {ipAll['ip']} is stored")
 
@@ -83,13 +85,7 @@ def scan(iprange,nbstart):
                 for ips in resultados:
                     PortIps = ips['ports']
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
-                       #mockup collection for the db
-                          play = {
-                              'name': "test",
-                              'uuid': "testt"
-
-                          }
-                          myColPlayer.insert(play,writeconcern={'w':1})
+                       store_server(ips)
 
                        #print(f"{PortIps[0]['service']['banner'][0]['description']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['version']}")
