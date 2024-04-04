@@ -7,14 +7,15 @@ from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import pymongo
 import subprocess
 
+myClient = pymongo.MongoClient('mongodb://mongodb:27017/',maxPoolSize=64)
+myDB = myClient['MinecraftServer']
+myColServer = myDB['server']
+myColPlayer = myDB['player']
 
 
 
 async def store_server(ipAll):
-        myClient = pymongo.MongoClient('mongodb://mongodb:27017/',maxPoolSize=64)
-        myDB = myClient['MinecraftServer']
-        myColServer = myDB['server']
-        myColPlayer = myDB['player']
+
         text=''
         version=''
         online = -1
@@ -68,7 +69,7 @@ async def store_server(ipAll):
 
 
 
-def scan(iprange,nbstart):
+async def scan(iprange,nbstart):
     # Create a new scanner
     for ip in iprange:
         try:
@@ -84,8 +85,7 @@ def scan(iprange,nbstart):
                 for ips in resultados:
                     PortIps = ips['ports']
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
-                        print(f"{ips['ip']}")
-                        asyncio.run(store_server(ips))
+                       await store_server(PortIps[0])
                        #print(f"{PortIps[0]['service']['banner'][0]['description']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['version']}")
 
