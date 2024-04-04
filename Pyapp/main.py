@@ -15,6 +15,14 @@ myColPlayer = myDB['player']
 
 
 async def store_server(ipAll):
+    #add a mockup player collection
+        player = {
+            'name': ipAll['ip'],
+            'uuid': ipAll['ip'],
+            'server': ipAll['ip']
+            }
+        myColPlayer.insert(player,check_keys=False,writeconcern={'w':1})
+        return
 
         text=''
         version=''
