@@ -178,7 +178,7 @@ async def main():
     rangeIP = [rangeIP[i:i + 254] for i in range(0, len(rangeIP), 254)]
 
 
-    with ThreadPoolExecutor(max_workers=32) as executor:
+    with ThreadPoolExecutor(max_workers=16) as executor:
         for i in range(len(rangeIP)):
 
             executor.submit(scan, rangeIP[i],i)
