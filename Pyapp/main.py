@@ -19,10 +19,7 @@ def store_server(ipAll,conn):
         statusmc = json.loads(status['service']['banner'])
 
         if 'description' in statusmc:
-            if 'text' in statusmc['description']:
-                text = statusmc['description']['text']
-            else:
-                text = statusmc['description']
+            text = statusmc['description']
 
         if 'version' in statusmc:
             version = statusmc['version']['name']
