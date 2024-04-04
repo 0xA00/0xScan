@@ -17,9 +17,6 @@ def store_server(ipAll,conn):
         favicon = ''
         status = ipAll['ports'][0]
         statusmc = json.loads(status['service']['banner'])
-        #check if the server is already stored
-        #if myColServer.find_one({'ip':ipAll['ip']}):
-            #return
 
         if 'description' in statusmc:
             if 'text' in statusmc['description']:
@@ -92,8 +89,7 @@ def create_connection(dbfile):
 
 def set_tables(conn,dbfile):
     sql_create_server_table = """ CREATE TABLE IF NOT EXISTS server (
-                                        id integer PRIMARY KEY,
-                                        ip text NOT NULL,
+                                        ip text PRIMARY KEY,
                                         port integer NOT NULL,
                                         version text,
                                         text text,
