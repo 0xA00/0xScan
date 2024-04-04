@@ -7,7 +7,7 @@ from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import pymongo
 import subprocess
 
-myClient = pymongo.MongoClient('mongodb://mongodb:27017/',maxPoolSize=64)
+myClient = pymongo.MongoClient('mongodb://mongodb:27017/')
 myDB = myClient['MinecraftServer']
 myColServer = myDB['server']
 myColPlayer = myDB['player']
