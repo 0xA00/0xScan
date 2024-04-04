@@ -7,9 +7,10 @@ import asyncio
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import subprocess
 
-conndb = None
 
-def store_server(ipAll):
+
+def store_server(ipAll,conn):
+        print(f"Storing server {ipAll['ip']}")
         text=''
         version=''
         online = -1
@@ -42,7 +43,7 @@ def store_server(ipAll):
                             'server': ipAll['ip']
                             }
                     print(ptab)
-                    add_player(ptab)
+                    add_player(conn,ptab)
 
 
         server = {
@@ -56,12 +57,12 @@ def store_server(ipAll):
                 }
 
         print(server)
-        add_server(server)
+        add_server(conn,server)
 
         print(f"Server {ipAll['ip']} is stored")
 
 
-def add_server(server):
+def add_server(conndb,server):
     sql = ''' INSERT INTO server(ip,port,version,text,online,favicon,raw)
                 VALUES(?,?,?,?,?,?,?) '''
     cur = conndb.cursor()
@@ -69,7 +70,7 @@ def add_server(server):
     conndb.commit()
 
 
-def add_player(player):
+def add_player(conndb,player):
     sql = ''' INSERT INTO player(uuid,name,server)
                 VALUES(?,?,?) '''
     cur = conndb.cursor()
@@ -93,6 +94,7 @@ def create_connection(dbfile):
     finally:
         if conn:
             conn.close()
+    return conn
 
 def set_tables(dbfile):
     sql_create_server_table = """ CREATE TABLE IF NOT EXISTS server (
@@ -128,7 +130,7 @@ def set_tables(dbfile):
 
 
 
-def scan(iprange,nbstart):
+def scan(iprange,nbstart,conn):
     # Create a new scanner
     for ip in iprange:
         try:
@@ -144,7 +146,7 @@ def scan(iprange,nbstart):
                 for ips in resultados:
                     PortIps = ips['ports']
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
-                       store_server(ips)
+                       store_server(ips,conn)
 
                        #print(f"{PortIps[0]['service']['banner'][0]['description']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['version']}")
@@ -217,7 +219,10 @@ def scan(iprange,nbstart):
 
 
 async def main():
-    #connect to the database
+    db = r"Minecraft.db"
+    conn = create_connection(db)
+    set_tables(db)
+    print("Database created")
 
 
     IPa = list(range(1,0xff))
@@ -242,13 +247,11 @@ async def main():
     with ThreadPoolExecutor(max_workers=4) as executor:
         for i in range(len(rangeIP)):
 
-            executor.submit(scan, rangeIP[i],i)
+            executor.submit(scan, rangeIP[i],i,conn)
 
 
 if __name__ == "__main__":
-    db = r"Minecraft.db"
-    create_connection(db)
-    set_tables(db)
+
 
     asyncio.run(main())
 
