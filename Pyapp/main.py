@@ -88,7 +88,8 @@ def create_connection(dbfile):
 
 def set_tables(conn,dbfile):
     sql_create_server_table = """ CREATE TABLE IF NOT EXISTS server (
-                                        ip text PRIMARY KEY,
+                                        id integer PRIMARY KEY,
+                                        ip text not null,
                                         port integer NOT NULL,
                                         version text,
                                         text text,
