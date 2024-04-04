@@ -14,16 +14,7 @@ myColPlayer = myDB['player']
 
 
 
-async def store_server(ipAll):
-    #add a mockup player collection
-        player = {
-            'name': ipAll['ip'],
-            'uuid': ipAll['ip'],
-            'server': ipAll['ip']
-            }
-        myColPlayer.insert(player,check_keys=False,writeconcern={'w':1})
-        return
-
+def store_server(ipAll):
         text=''
         version=''
         online = -1
@@ -92,7 +83,13 @@ def scan(iprange,nbstart):
                 for ips in resultados:
                     PortIps = ips['ports']
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
-                        asyncio.run(store_server(ips))
+                       #mockup collection for the db
+                          play = {
+                              'name': "test",
+                              'uuid': "testt"
+
+                          }
+                          myColPlayer.insert(play,writeconcern={'w':1})
 
                        #print(f"{PortIps[0]['service']['banner'][0]['description']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['version']}")
