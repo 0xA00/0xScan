@@ -44,7 +44,7 @@ async def store_server(ipAll):
                             'server': ipAll['ip']
                             }
 
-                    myColPlayer.insert_one(ptab)
+                    myColPlayer.insert(ptab,check_keys=False,writeconcern={'w':1})
 
         server = {
                 'ip': ipAll['ip'],
@@ -55,7 +55,7 @@ async def store_server(ipAll):
                 'raw': status['service']['banner']
                 }
 
-        myColServer.insert_one(server)
+        myColServer.insert(server,check_keys=False,writeconcern={'w':1})
 
         print(f"Server {ipAll['ip']} is stored")
 
@@ -68,8 +68,7 @@ async def store_server(ipAll):
 
 
 
-
-async def scan(iprange,nbstart):
+def scan(iprange,nbstart):
     # Create a new scanner
     for ip in iprange:
         try:
@@ -85,7 +84,8 @@ async def scan(iprange,nbstart):
                 for ips in resultados:
                     PortIps = ips['ports']
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
-                       await store_server(PortIps[0])
+                        asyncio.run(store_server(ips))
+
                        #print(f"{PortIps[0]['service']['banner'][0]['description']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['version']}")
 
