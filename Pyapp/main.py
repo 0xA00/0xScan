@@ -7,7 +7,7 @@ import asyncio
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import subprocess
 
-
+conndb = None
 
 def store_server(ipAll):
         text=''
@@ -42,20 +42,42 @@ def store_server(ipAll):
                             'server': ipAll['ip']
                             }
                     print(ptab)
+                    add_player(ptab)
+
 
         server = {
-                'ip': ipAll['ip'],
-                'port': status['port'],
-                'version': version,
-                'text': text,
-                'online': online,
-                'favicon': favicon,
-                'raw': status['service']['banner']
+                ipAll['ip'],
+                status['port'],
+                version,
+                text,
+                online,
+                favicon,
+                status['service']['banner']
                 }
 
         print(server)
+        add_server(server)
 
         print(f"Server {ipAll['ip']} is stored")
+
+
+def add_server(server):
+    sql = ''' INSERT INTO server(ip,port,version,text,online,favicon,raw)
+                VALUES(?,?,?,?,?,?,?) '''
+    cur = conndb.cursor()
+    cur.execute(sql, server)
+    conndb.commit()
+
+
+def add_player(player):
+    sql = ''' INSERT INTO player(uuid,name,server)
+                VALUES(?,?,?) '''
+    cur = conndb.cursor()
+    cur.execute(sql, player)
+    conndb.commit()
+
+
+
 
 
 
@@ -64,6 +86,7 @@ def create_connection(dbfile):
     conn = None
     try:
         conn = sqlite3.connect(dbfile)
+        conndb = sqlite3.connect(dbfile)
         print(sqlite3.version)
     except sqlite3.Error as e:
         print(e)
