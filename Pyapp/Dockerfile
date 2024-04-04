@@ -19,7 +19,7 @@ RUN apt-get install libpcap0.8 libpcap0.8-dev libpcap-dev
 RUN apt -y install python3-venv
 RUN python3 -m venv .venv
 RUN . .venv/bin/activate
-RUN pip3 install pymongo
+RUN pip3 install sqlite3
 
 
 CMD ["python3", "main.py"]

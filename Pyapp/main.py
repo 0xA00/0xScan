@@ -1,16 +1,11 @@
 import random
+import sqlite3
 import os
 import json
 from threading import Thread
 import asyncio
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
-import pymongo
 import subprocess
-
-myClient = pymongo.MongoClient('mongodb://mongodb:27017/')
-myDB = myClient['MinecraftServer']
-myColServer = myDB['server']
-myColPlayer = myDB['player']
 
 
 
@@ -46,8 +41,6 @@ def store_server(ipAll):
                             'uuid': player['id'],
                             'server': ipAll['ip']
                             }
-
-                    myColPlayer.insert_one(ptab,writeconcern={'w':0})
                     print(ptab)
 
         server = {
@@ -60,7 +53,6 @@ def store_server(ipAll):
                 'raw': status['service']['banner']
                 }
 
-        myColServer.insert_one(server,writeconcern={'w':0})
         print(server)
 
         print(f"Server {ipAll['ip']} is stored")
@@ -68,7 +60,16 @@ def store_server(ipAll):
 
 
 
-
+def create_connection(dbfile):
+    conn = None
+    try:
+        conn = sqlite3.connect(dbfile)
+        print(sqlite3.version)
+    except sqlite3.Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
 
 
 
@@ -185,13 +186,14 @@ async def main():
     rangeIP = [rangeIP[i:i + 254] for i in range(0, len(rangeIP), 254)]
 
 
-    with ThreadPoolExecutor(max_workers=16) as executor:
+    with ThreadPoolExecutor(max_workers=4) as executor:
         for i in range(len(rangeIP)):
 
             executor.submit(scan, rangeIP[i],i)
 
 
 if __name__ == "__main__":
+    create_connection("test.db")
 
     asyncio.run(main())
 
