@@ -11,8 +11,6 @@ services:
     build: ./Pyapp
     networks:
       - scanworks
-    depends_on:
-      - mongodb
     volumes:
       - sharedvolume:/app
 
