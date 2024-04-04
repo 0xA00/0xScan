@@ -212,6 +212,19 @@ async def main():
     set_tables(conn,db)
     print("Database created")
 
+    server = (
+        "12",
+        25565,
+        "1.16.5",
+        "A minecraft server",
+        1,
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjElEQVR42mNk"
+        "wAF/GZ"
+    )
+
+    add_server(conn,server)
+
+
     IPa = list(range(1,0xff))
     IPb = list(range(1,0xff))
 
