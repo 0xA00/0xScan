@@ -80,8 +80,7 @@ def add_player(conndb,player):
 def create_connection(dbfile):
     conn = None
     try:
-        conn = sqlite3.connect(dbfile)
-        conndb = sqlite3.connect(dbfile)
+        conn = sqlite3.connect(dbfile,check_same_thread = False)
         print(sqlite3.version)
     except sqlite3.Error as e:
         print(e)
