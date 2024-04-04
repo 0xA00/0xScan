@@ -10,7 +10,7 @@ import subprocess
 
 
 def store_server(ipAll,conn):
-        print(f"Storing server {ipAll['ip']}")
+        print(ipAll['ports'][0])
         text=''
         version=''
         online = -1
@@ -209,19 +209,6 @@ async def main():
     set_tables(conn,db)
     print("Database created")
 
-    server = (
-        "12",
-        25565,
-        "1.16.5",
-        "A minecraft server",
-        1,
-        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjElEQVR42mNk",
-        "wAF/GZ"
-    )
-
-    add_server(conn,server)
-
-
     IPa = list(range(1,0xff))
     IPb = list(range(1,0xff))
 
@@ -248,17 +235,4 @@ async def main():
 
 
 if __name__ == "__main__":
-
-
     asyncio.run(main())
-
-
-   #example for me :
-   #myclient = pymongo.MongoClient('mongodb://mongodb:27017')
-   #mydb = myclient["MinecraftServer"]
-
-       #create a collection
-   #mycol = mydb["server"]
-   #mydict = {"name": "John", "address": "Highway 37"}
-   #x = mycol.insert_one(mydict)
-   #print(x.inserted_id)
