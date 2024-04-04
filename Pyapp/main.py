@@ -18,6 +18,7 @@ def store_server(ipAll):
         text=''
         version=''
         online = -1
+        favicon = ''
         status = ipAll['ports'][0]
         statusmc = json.loads(status['service']['banner'])
         #check if the server is already stored
@@ -33,6 +34,9 @@ def store_server(ipAll):
         if 'version' in statusmc:
             version = statusmc['version']['name']
 
+        if 'favicon' in statusmc:
+            favicon = statusmc['favicon']
+
         if 'players' in statusmc:
             online = statusmc['players']['online']
             if 'sample' in statusmc['players']:
@@ -43,7 +47,7 @@ def store_server(ipAll):
                             'server': ipAll['ip']
                             }
 
-                    #myColPlayer.insert(ptab,check_keys=False,writeconcern={'w':1})
+                    myColPlayer.insert(ptab,check_keys=False,writeconcern={'w':1})
                     print(ptab)
 
         server = {
@@ -52,10 +56,11 @@ def store_server(ipAll):
                 'version': version,
                 'text': text,
                 'online': online,
+                'favicon': favicon,
                 'raw': status['service']['banner']
                 }
 
-        #myColServer.insert(server,check_keys=False,writeconcern={'w':1})
+        myColServer.insert(server,check_keys=False,writeconcern={'w':1})
         print(server)
 
         print(f"Server {ipAll['ip']} is stored")
