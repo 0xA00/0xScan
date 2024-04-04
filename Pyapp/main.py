@@ -9,25 +9,25 @@ import subprocess
 
 
 
-def store_server(ipAll,conn):
-        print(ipAll['ports'][0])
-        text=''
-        version=''
-        online = -1
-        favicon = ''
-        status = ipAll['ports'][0]
-        statusmc = json.loads(status['service']['banner'])
+def store_server(ipAll):
+    print(ipAll['ports'][0])
+    text=''
+    version=''
+    online = -1
+    favicon = ''
+    status = ipAll['ports'][0]
+    statusmc = json.loads(status['service']['banner'])
 
-        if 'description' in statusmc:
+    if 'description' in statusmc:
             text = statusmc['description']
 
-        if 'version' in statusmc:
-            version = statusmc['version']['name']
+    if 'version' in statusmc:
+          version = statusmc['version']['name']
 
-        if 'favicon' in statusmc:
+    if 'favicon' in statusmc:
             favicon = statusmc['favicon']
 
-        if 'players' in statusmc:
+    if 'players' in statusmc:
             online = statusmc['players']['online']
             if 'sample' in statusmc['players']:
                 for player in statusmc['players']['sample']:
@@ -37,10 +37,10 @@ def store_server(ipAll,conn):
                             ipAll['ip']
                             )
                     print(ptab)
-                    add_player(conn,ptab)
+                    #add_player(conn,ptab)
 
 
-        server = (
+    server = (
                 ipAll['ip'],
                 status['port'],
                 version,
@@ -50,10 +50,10 @@ def store_server(ipAll,conn):
                 status['service']['banner']
         )
 
-        print(server)
-        add_server(conn,server)
+    print(server)
+    #add_server(conn,server)
 
-        print(f"Server {ipAll['ip']} is stored")
+    print(f"Server {ipAll['ip']} is stored")
 
 
 def add_server(conndb,server):
@@ -131,7 +131,7 @@ def scan(iprange,nbstart,conn):
                 for ips in resultados:
                     PortIps = ips['ports']
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
-                       store_server(ips,conn)
+                       store_server(ips)
 
                        #print(f"{PortIps[0]['service']['banner'][0]['description']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['version']}")
@@ -228,7 +228,7 @@ async def main():
     rangeIP = [rangeIP[i:i + 254] for i in range(0, len(rangeIP), 254)]
 
 
-    with ThreadPoolExecutor(max_workers=4) as executor:
+    with ThreadPoolExecutor(max_workers=16) as executor:
         for i in range(len(rangeIP)):
 
             executor.submit(scan, rangeIP[i],i,conn)
