@@ -218,9 +218,9 @@ async def main():
     print("Database created")
 
     player = {
-        "uuid": "123456",
-        "name": "test",
-        "server": "test"
+        "123456",
+        "test",
+        "test"
     }
 
     add_player(conn,player)
