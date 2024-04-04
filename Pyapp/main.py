@@ -217,17 +217,13 @@ async def main():
     set_tables(conn,db)
     print("Database created")
 
-    server = {
-        'test',
-        25565,
-        'test',
-        'test',
-        1,
-        'test',
-        'test'
+    player = {
+        "uuid": "123456",
+        "name": "test",
+        "server": "test"
     }
 
-    add_server(conn,server)
+    add_player(conn,player)
 
 
 
