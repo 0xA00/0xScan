@@ -7,13 +7,14 @@ from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import pymongo
 import subprocess
 
-myClient = ""
-myDB = ""
-myColServer = ""
-myColPlayer = ""
+
 
 
 def store_server(ipAll):
+        myClient = pymongo.MongoClient('mongodb://mongodb:27017/',maxPoolSize=64)
+        myDB = myClient['MinecraftServer']
+        myColServer = myDB['server']
+        myColPlayer = myDB['player']
         text=''
         version=''
         online = -1
@@ -185,25 +186,10 @@ async def main():
 
 
 if __name__ == "__main__":
-   #myClient = pymongo.MongoClient('mongodb://mongodb:27017/',maxPoolSize=64)
-   #myDB = myClient['MinecraftServer']
-   #myColServer = myDB['server']
-   #myColPlayer = myDB['player']
-   myClient = pymongo.MongoClient('mongodb://mongodb:27017/')
-   #try to connect to the database
-   print("Connecting to the database")
-   try:
-        myClient.server_info()
-        print("Connected to the database")
 
-        #if the connection is successful, we will create the database and the collection
-        myDB = myClient['MinecraftServer']
-        myColServer = myDB['server']
-        myColPlayer = myDB['player']
-        asyncio.run(main())
 
-   except Exception as e:
-        print(f"Failed to connect to the database : {e}")
+    asyncio.run(main())
+
 
 
 
