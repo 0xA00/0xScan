@@ -217,11 +217,11 @@ async def main():
     set_tables(conn,db)
     print("Database created")
 
-    player = {
+    player = (
         "123456",
         "test",
         "test"
-    }
+    )
 
     add_player(conn,player)
 
