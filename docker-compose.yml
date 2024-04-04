@@ -12,8 +12,7 @@ services:
     networks:
       - scanworks
     volumes:
-      - sharedvolume:/app
+      - sharedvolume:/app/pyapp
 
 volumes:
   sharedvolume:
-    driver: local
