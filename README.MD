@@ -1,24 +1,23 @@
 # 0xScan
 
-A simple Python scanner that is designed to scan Minecraft servers using a Masscan fork.
+A simple Python scanner designed to scan Minecraft servers using a fork of Masscan.
 
-> :warning: **Warning:** First of all, please use this on a VPS, You really don't want to be banned from certain part of the Internet.
+> :warning: **Warning:** First of all, please use this on a VPS. You really don't want to be banned from certain parts of the Internet.
 
 
 ## Features
 
-- Will scan 16 ip ranges each time in parallel
-- Have a speed of around 1k packets per second per ip range so you can count around 16k packets per second
-- The docker-compose have sqlitebrowser so you can see your database on <your_domain/ip>:3000, you'll just need to click on open database then select MinecraftDB.db
+- It will scan 16 IP ranges simultaneously each time
+- It should have a speed of around 1k packets per second per IP range, so you can expect approximately 16k packets per second in total.
+- The docker-compose includes SQLiteBrowser, allowing you to view your database at <your_domain/ip>:3000. You'll just need to click on 'Open Database' and then select 'MinecraftDB.db'
 
 ## Notes
 
-This scanner is mostly made for fun. If you want to scan servers : you should do it at your own risk and don't do it on your own computer, you really don't want to be banned from parts of the internet / have your internet provider cutting off your internet access.
-And also you should try to make your own scanner, by using Masscan (or any scanner) and wrap it or create your own implementation.
+This scanner is primarily created for amusement. If you decide to scan servers, please be aware that you do so at your own risk. Avoid conducting scans on your personal computer as you risk being banned from certain parts of the internet or having your internet access cut off by your provider. Additionally, consider developing your own scanner by leveraging tools like Masscan (or any other scanner) and either wrapping it or creating your own implementation.
 
 ## To-do list
 
-there are a few things I want to do / improve before saying that this projet is "done" :
+There are a few things I want to do/improve before considering this project 'done':
 
 - [ ] Improve the database (using MongoDB)
 - [ ] create an API
@@ -53,7 +52,7 @@ If everything is working , you just need to go on your browser and type `<your_d
 
 ## Credits
 
-Thanks to [LiveOverflow](https://www.youtube.com/@LiveOverflow/) who gave me the idea of making a minecraft server scanner, his series on Minecraft really helped sparkling the idea of making a scanner and coding Minecraft hacks for fun on the other hand.
+Thanks to [LiveOverflow](https://www.youtube.com/@LiveOverflow/) who gave me the idea of making a minecraft server scanner, his series on Minecraft really helped spark the idea of making a scanner and coding Minecraft hacks for fun on the other hand.
 This project was also made so I could join their server as it was the "only" way to find the server.
-Sadly there is a whitelist made out of bots so I can't join the server.\
-Also Thanks to [Matdoesdev](https://matdoes.dev/) who really made me want to make a somewhat serious projet thanks to their blog, it has gave me a look on what can be done with this project and some of their other projects gave me new ideas.
+Sadly now there is a whitelist made out of bots so I can't join the server.\
+Also Thanks to [Matdoesdev](https://matdoes.dev/) who really made me want to make a somewhat serious projet thanks to their blog, it has given me a look on what can be done with this project and some of their other projects gave me new ideas.
