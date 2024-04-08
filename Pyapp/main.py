@@ -1,33 +1,35 @@
 import random
-import sqlite3
 import os
 import json
 from threading import Thread
 import asyncio
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import subprocess
+import sqlite3
 
+
+dbConn = None
 
 
 def store_server(ipAll):
-    print(ipAll['ports'][0])
-    text=''
-    version=''
-    online = -1
-    favicon = ''
-    status = ipAll['ports'][0]
-    statusmc = json.loads(status['service']['banner'])
 
-    if 'description' in statusmc:
-            text = statusmc['description']
+        text=''
+        version=''
+        online = -1
+        favicon= ''
+        status = ipAll['ports'][0]
+        statusmc = json.loads(status['service']['banner'])
+        if 'description' in statusmc:
+            text = str(statusmc['description'])
 
-    if 'version' in statusmc:
-          version = statusmc['version']['name']
-
-    if 'favicon' in statusmc:
+        if 'version' in statusmc:
+            version = str(statusmc['version']['name'])
+        
+        if 'favicon' in statusmc:
             favicon = statusmc['favicon']
 
-    if 'players' in statusmc:
+
+        if 'players' in statusmc:
             online = statusmc['players']['online']
             if 'sample' in statusmc['players']:
                 for player in statusmc['players']['sample']:
@@ -36,11 +38,10 @@ def store_server(ipAll):
                             player['name'],
                             ipAll['ip']
                             )
+                    add_player(ptab)
                     print(ptab)
-                    #add_player(conn,ptab)
 
-
-    server = (
+        server = (
                 ipAll['ip'],
                 status['port'],
                 version,
@@ -48,42 +49,42 @@ def store_server(ipAll):
                 online,
                 favicon,
                 status['service']['banner']
-        )
+                )
+        add_server(server)
+        print(server)
 
-    print(server)
-    #add_server(conn,server)
+        #print(f"Server {ipAll['ip']} is stored")
 
-    print(f"Server {ipAll['ip']} is stored")
-
-
-def add_server(conndb,server):
+def add_server(server):
+    global dbConn
     sql = ''' INSERT INTO server(ip,port,version,text,online,favicon,raw)
                 VALUES(?,?,?,?,?,?,?) '''
-    cur = conndb.cursor()
+    cur = dbConn.cursor()
     cur.execute(sql, server)
-    conndb.commit()
+    dbConn.commit()
 
 
-def add_player(conndb,player):
+def add_player(player):
+    global dbConn
     sql = ''' INSERT INTO player(uuid,name,server)
                 VALUES(?,?,?) '''
-    cur = conndb.cursor()
+    cur = dbConn.cursor()
     cur.execute(sql, player)
-    conndb.commit()
-
-
+    dbConn.commit()
 
 
 def create_connection(dbfile):
-    conn = None
+    global dbConn
     try:
-        conn = sqlite3.connect(dbfile,check_same_thread = False)
+        dbConn = sqlite3.connect(dbfile,check_same_thread = False)
         print(sqlite3.version)
     except sqlite3.Error as e:
         print(e)
-    return conn
+    
 
-def set_tables(conn,dbfile):
+
+def set_tables(dbfile):
+    global dbConn
     sql_create_server_table = """ CREATE TABLE IF NOT EXISTS server (
                                         ip text PRIMARY KEY,
                                         port integer NOT NULL,
@@ -93,29 +94,18 @@ def set_tables(conn,dbfile):
                                         favicon text,
                                         raw text
                                         ); """
-
     sql_create_player_table = """ CREATE TABLE IF NOT EXISTS player (
-                                        uuid text PRIMARY KEY,
+                                        id integer PRIMARY KEY,
+                                        uuid text NOT NULL,
                                         name text NOT NULL,
                                         server text NOT NULL
                                         ); """
-
-
-    c = conn.cursor()
+    c = dbConn.cursor()
     c.execute(sql_create_server_table)
     c.execute(sql_create_player_table)
-    conn.commit()
+    dbConn.commit()
 
-
-
-
-
-
-
-
-
-
-def scan(iprange,nbstart,conn):
+def scan(iprange,nbstart):
     # Create a new scanner
     for ip in iprange:
         try:
@@ -131,8 +121,8 @@ def scan(iprange,nbstart,conn):
                 for ips in resultados:
                     PortIps = ips['ports']
                     if 'service' in PortIps[0] and PortIps[0]['service']['name']=='minecraft':
-                       store_server(ips)
-
+                        #print(f"{PortIps[0]['service']}")
+                        store_server(ips)
                        #print(f"{PortIps[0]['service']['banner'][0]['description']}")
                        #print(f"{PortIps[0]['service']['banner'][0]['version']}")
 
@@ -185,7 +175,7 @@ def scan(iprange,nbstart,conn):
 
             #if not empty
            # for ip in result:
-            #    host=result[ip]
+           #    host=result[ip]
              #   print(f"{ip}:25565")
                     #get_server_info.send_with_options(args=(ip,MongoClient), delay=5000)
 
@@ -204,10 +194,9 @@ def scan(iprange,nbstart,conn):
 
 
 async def main():
-    db = r"Minecraft.db"
-    conn = create_connection(db)
-    set_tables(conn,db)
-    print("Database created")
+
+    create_connection("./sqlitebrowser/MinecraftDB.db")
+    set_tables("./sqlitebrowser/MinecraftDB.db")
 
     IPa = list(range(1,0xff))
     IPb = list(range(1,0xff))
@@ -231,8 +220,17 @@ async def main():
     with ThreadPoolExecutor(max_workers=16) as executor:
         for i in range(len(rangeIP)):
 
-            executor.submit(scan, rangeIP[i],i,conn)
+            executor.submit(scan, rangeIP[i],i)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+   asyncio.run(main())
+   #example for me :
+   # myclient = pymongo.MongoClient('mongodb://mongodb:27017')
+   # mydb = myclient["MinecraftServer"]
+
+       #create a collection
+   # mycol = mydb["server"]
+   # mydict = {"name": "John", "address": "Highway 37"}
+   # x = mycol.insert_one(mydict)
+   # print(x.inserted_id) 
