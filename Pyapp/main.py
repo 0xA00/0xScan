@@ -111,7 +111,7 @@ def scan(iprange,nbstart):
         try:
 
             print(f"{ip} scanning")
-            result = subprocess.Popen([f'masscan -oJ - {ip} --banners -p25565 --wait 3 --rate=1000 --adapter-port 25565','&'],stdout=subprocess.PIPE,shell=True)
+            result = subprocess.Popen([f'masscan -oJ - {ip} --banners -p25565 --wait 3 --rate=500 --adapter-port 25565','&'],stdout=subprocess.PIPE,shell=True)
             stdout = result.communicate()[0]
             #print(stdout)
             if stdout != b'':
